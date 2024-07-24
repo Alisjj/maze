@@ -1,4 +1,5 @@
 from tkinter import Tk, BOTH, Canvas
+import time
 
 
 class Point:
@@ -67,6 +68,9 @@ class Cell:
         self._y2 = _y2
         self._win = _win
 
+    def __repr__(self) -> str:
+        return f"cell {self._x1} {self._y1}"
+
     def draw(self, x1, y1, x2, y2):
         p1 = Point(x1, y1)
         p2 = Point(x2, y2)
@@ -104,7 +108,7 @@ class Cell:
 
 class Maze:
 
-    def __init__(self, x1, y1, num_rows, num_cols, cell_size_x, cell_size_y, win, ) -> None:
+    def __init__(self, x1, y1, num_rows, num_cols, cell_size_x, cell_size_y, win: Window, ) -> None:
         self.x1 = x1
         self.y1 = y1
         self.num_rows = num_rows
@@ -115,30 +119,47 @@ class Maze:
         self.cells = []
 
     def create_cells(self):
-        cell = Cell(self.x1, self.y1, self.cell_size_x, self.cell_size_y, self.win)
-        for _ in range(1, self.num_cols + 1):
-            for j in range(1, self.num_rows + 1):
-                self.cells.append(cell)
+        for i in range(self.num_cols):
+            cells = []
+            for _ in range(self.num_rows):
+                cell = Cell(self.x1, self.y1, self.cell_size_x, self.cell_size_y, self.win)
+                cells.append(cell)
+            self.cells.append(cells)
+
+        for i in range(self.num_cols):
+            for j in range(self.num_rows):
+                self.draw(i, j)
+
+    def draw(self, i, j):
+        x_cord = self.x1 + i * self.cell_size_x
+        y_cord = self.y1 + j * self.cell_size_y
+
+        cell = self.cells[i][j]
+        cell.draw(x_cord, y_cord, self.x1, self.y1)
+        self.animate()
+
+    def animate(self):
+        self.win.redraw()
+        time.sleep(0.05)
+        
 
 def main():
     win = Window(800, 600)
 
-    x1_cell1, y1_cell1 = 50, 50
-    x2_cell1, y2_cell1 = 100, 100
+    x1 = 5  # starting x position of the maze
+    y1 = 5  # starting y position of the maze
+    num_rows = 12  # number of rows in the maze
+    num_cols = 11  # number of columns in the maze
+    cell_size_x = 10  # width of each cell
+    cell_size_y = 10  # height of each cell
+    
 
-    # Coordinates for the second cell (to the right of the first cell)
-    x1_cell2, y1_cell2 = 100, 50
-    x2_cell2, y2_cell2 = 150, 100
-
-    # Create instances of the Cell class
-    cell1 = Cell(x1_cell1, x2_cell1, y1_cell1, y2_cell1, win)
-    cell2 = Cell(x1_cell2, x2_cell2, y1_cell2, y2_cell2, win)
-
-    # Draw the cells
-    cell1.draw(x1_cell1, y1_cell1, x2_cell1, y2_cell1)
-    cell2.draw(x1_cell2, y1_cell2, x2_cell2, y2_cell2)
-
-    cell1.draw_move(cell2)
+    # Create and draw the maze
+    maze = Maze(x1, y1, num_rows, num_cols, cell_size_x, cell_size_y, win)
+    print(len(maze.cells))
+    maze.create_cells()
+    print(len(maze.cells))
+    print(maze.cells)
 
     win.wait_for_close()
 
