@@ -1,6 +1,7 @@
 import unittest
 from main import Maze, Window
 
+
 class Tests(unittest.TestCase):
     def test_maze_create_cells(self):
         win = Window(800, 600)
