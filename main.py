@@ -1,4 +1,3 @@
-from tkinter import Tk, BOTH, Canvas
 from maze import Maze
 from widgets import Window
 

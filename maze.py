@@ -1,7 +1,8 @@
 import random
 import time
-from widgets import Window
+
 from cell import Cell
+from widgets import Window
 
 
 class Maze:

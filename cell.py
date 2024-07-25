@@ -1,4 +1,4 @@
-from widgets import Window, Point, Line
+from widgets import Line, Point, Window
 
 
 class Cell:
