@@ -24,11 +24,11 @@ class Window:
         self.height = height
         self.root = Tk()
         self.root.protocol("WM_DELETE_WINDOW", self.close)
-        self.canvas = Canvas()
+        self.canvas = Canvas(self.root, height=height, width=width)
         self.canvas.pack()
         self.running = False
 
-    def draw_line(self, line: Line, fill_color: str):
+    def draw_line(self, line, fill_color):
         line.draw(self.canvas, fill_color)
 
     def redraw(self):
